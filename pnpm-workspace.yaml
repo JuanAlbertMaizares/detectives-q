@@ -1,0 +1,8 @@
+allowBuilds:
+  esbuild: true
+  workerd: true
+permissions:
+  prisma:
+    skills: true
+skills:
+  dirs: []
