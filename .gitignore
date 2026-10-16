@@ -159,3 +159,8 @@ dist
 # End of https://www.toptal.com/developers/gitignore/api/node,linux
 
 /generated/prisma
+
+.agents/*
+.claude/*
+.windsurf/*
+skills-lock.json
