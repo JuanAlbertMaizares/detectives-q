@@ -159,6 +159,7 @@ dist
 # End of https://www.toptal.com/developers/gitignore/api/node,linux
 
 /generated/prisma
+src/generated/prisma
 
 .agents/*
 .claude/*

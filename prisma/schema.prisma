@@ -7,8 +7,106 @@ datasource db {
   provider = "postgresql"
 }
 
-model Detective {
-  id        String   @id @default(cuid())
-  nombre    String
-  createdAt DateTime @default(now())
+model Character {
+  id            String           @id @default(cuid())
+  nombre        String
+  nombreJapones String?          @map("nombre_japones")
+  alias         String?
+  edad          Int?
+  descripcion   String?
+  imagenUrl     String?          @map("imagen_url")
+  rol           Role             @default(DETECTIVE)
+  createdAt     DateTime         @default(now()) @map("created_at")
+  updatedAt     DateTime         @updatedAt @map("updated_at")
+  resoluciones  CaseResolution[]
+  skills        Skill[]          @relation("CharacterSkills")
+  grupos        Group[]          @relation("GroupMembers")
+
+  @@map("characters")
+}
+
+model Group {
+  id          String      @id @default(cuid())
+  nombre      String      @unique
+  tipo        GroupType   @default(OTRO)
+  descripcion String?
+  createdAt   DateTime    @default(now()) @map("created_at")
+  updatedAt   DateTime    @updatedAt @map("updated_at")
+  miembros    Character[] @relation("GroupMembers")
+
+  @@map("groups")
+}
+
+model Case {
+  id           String           @id @default(cuid())
+  titulo       String
+  descripcion  String?
+  fechaHecho   DateTime?        @map("fecha_hecho")
+  dificultad   Int?
+  estado       CaseStatus       @default(PENDIENTE)
+  createdAt    DateTime         @default(now()) @map("created_at")
+  updatedAt    DateTime         @updatedAt @map("updated_at")
+  resoluciones CaseResolution[]
+
+  @@map("cases")
+}
+
+model Skill {
+  id          String      @id @default(cuid())
+  nombre      String      @unique
+  descripcion String?
+  tipo        SkillType   @default(OTRA)
+  createdAt   DateTime    @default(now()) @map("created_at")
+  updatedAt   DateTime    @updatedAt @map("updated_at")
+  personajes  Character[] @relation("CharacterSkills")
+
+  @@map("skills")
+}
+
+model CaseResolution {
+  id          String    @id @default(cuid())
+  caseId      String    @map("case_id")
+  characterId String    @map("character_id")
+  rolEnCaso   String?   @map("rol_en_caso")
+  resumen     String?
+  resueltoEn  DateTime  @default(now()) @map("resuelto_en")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  case        Case      @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  character   Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
+
+  @@unique([caseId, characterId])
+  @@map("case_resolutions")
+}
+
+enum Role {
+  DETECTIVE
+  PROFESOR
+  DIRECTOR
+  ANTAGONISTA
+  ALIADO
+}
+
+enum GroupType {
+  CLASE_Q
+  AYATSURI
+  PLUTO
+  ACADEMIA
+  OTRO
+}
+
+enum CaseStatus {
+  PENDIENTE
+  EN_PROGRESO
+  RESUELTO
+  ARCHIVADO
+}
+
+enum SkillType {
+  COGNITIVA
+  FISICA
+  SENSORIAL
+  TECNICA
+  SOCIAL
+  OTRA
 }
