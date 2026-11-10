@@ -168,3 +168,5 @@ src/generated/prisma/
 .claude/*
 .windsurf/*
 skills-lock.json
+
+test-query.ts
