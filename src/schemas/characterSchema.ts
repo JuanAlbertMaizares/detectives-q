@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
-export const getCharacterByIdSchema = z.object({
+export const getCharacterByIdSchema = {
   params: z.object({
-    id: z.string().cuid({ message: 'ID inválido' }),
+    id: z.cuid({ error: 'ID inválido' }),
   }),
-})
+}

@@ -8,7 +8,7 @@ datasource db {
 }
 
 model Character {
-  id            String           @id @default(cuid())
+  id            String           @id @default(cuid(2))
   nombre        String
   nombreJapones String?          @map("nombre_japones")
   alias         String?
@@ -26,7 +26,7 @@ model Character {
 }
 
 model Group {
-  id          String      @id @default(cuid())
+  id          String      @id @default(cuid(2))
   nombre      String      @unique
   tipo        GroupType   @default(OTRO)
   descripcion String?
@@ -38,7 +38,7 @@ model Group {
 }
 
 model Case {
-  id           String           @id @default(cuid())
+  id           String           @id @default(cuid(2))
   titulo       String
   descripcion  String?
   fechaHecho   DateTime?        @map("fecha_hecho")
@@ -52,7 +52,7 @@ model Case {
 }
 
 model Skill {
-  id          String      @id @default(cuid())
+  id          String      @id @default(cuid(2))
   nombre      String      @unique
   descripcion String?
   tipo        SkillType   @default(OTRA)
@@ -64,7 +64,7 @@ model Skill {
 }
 
 model CaseResolution {
-  id          String    @id @default(cuid())
+  id          String    @id @default(cuid(2))
   caseId      String    @map("case_id")
   characterId String    @map("character_id")
   rolEnCaso   String?   @map("rol_en_caso")
