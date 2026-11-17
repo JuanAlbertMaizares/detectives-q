@@ -4,15 +4,17 @@ import { CharacterService } from '../services/characterService.js'
 import { 
   getCharacterByIdSchema, 
   createCharacterSchema, 
-  deleteCharacterSchema 
+  deleteCharacterSchema, 
+  getCharactersQuerySchema
 } from '../schemas/characterSchema.js'
 
 export async function characterRoutes(app: FastifyInstance) {
   const server = app.withTypeProvider<ZodTypeProvider>()
 
   // GET ALL
-  server.get('/', async () => {
-    const characters = await CharacterService.getAll()
+  server.get('/', { schema: getCharactersQuerySchema }, async (request) => {
+    const { rol, search } = request.query
+    const characters = await CharacterService.getAll({ rol, search })
     return { data: characters }
   })
 

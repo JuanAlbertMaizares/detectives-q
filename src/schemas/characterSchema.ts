@@ -19,11 +19,22 @@ export const createCharacterSchema = {
     alias: z.string().optional(),
     edad: z.number().int().positive().optional(),
     descripcion: z.string().optional(),
-    rol: z.nativeEnum(Role).optional(), // Valida que sea un rol del enum de Prisma
+    // Usamos z.enum con Object.values
+    rol: z.enum(Object.values(Role) as [string, ...string[]]).optional(),
   }),
 }
 
 // NUEVO: Esquema para DELETE /:id
 export const deleteCharacterSchema = {
   params: idParamSchema, // Reutilizamos el mismo esquema limpio
+}
+
+// schema para filtrado
+export const getCharactersQuerySchema = {
+  querystring: z.object({
+    rol: z.enum(Object.values(Role) as [string, ...string[]])
+      .optional()
+      .describe('Filtrar por rol (DETECTIVE, PROFESOR, etc.)'),
+    search: z.string().optional().describe('Buscar por nombre o alias'),
+  }),
 }
