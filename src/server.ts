@@ -36,6 +36,10 @@ app.get('/health', async () => {
 // Registrar rutas
 app.register(characterRoutes, { prefix: '/characters' })
 
+// 1. EXPORTAMOS la app para que los tests puedan usarla
+export { app }
+
+// 2. CREAMOS la función start
 const start = async () => {
   try {
     await app.listen({ port: 3000, host: '0.0.0.0' })
@@ -46,4 +50,7 @@ const start = async () => {
   }
 }
 
+// 3. SOLO ARRANCAMOS el servidor si NO estamos en entorno de test
+if (process.env.NODE_ENV !== 'test') {
 start()
+}
