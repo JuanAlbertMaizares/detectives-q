@@ -1,6 +1,7 @@
 import Fastify, { FastifyError } from 'fastify'
 import { serializerCompiler, validatorCompiler, ZodTypeProvider } from 'fastify-type-provider-zod'
 import { characterRoutes } from './routes/characterRoutes.js'
+import { caseRoutes } from './routes/caseRoutes.js'
 
 const app = Fastify({
   logger: true,
@@ -35,6 +36,9 @@ app.get('/health', async () => {
 
 // Registrar rutas
 app.register(characterRoutes, { prefix: '/characters' })
+
+app.register(caseRoutes, { prefix: '/cases' })
+
 
 // 1. EXPORTAMOS la app para que los tests puedan usarla
 export { app }
