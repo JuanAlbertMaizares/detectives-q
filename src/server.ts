@@ -1,7 +1,11 @@
 import Fastify, { FastifyError } from 'fastify'
-import { serializerCompiler, validatorCompiler, ZodTypeProvider } from 'fastify-type-provider-zod'
+import { jsonSchemaTransform, serializerCompiler, validatorCompiler, ZodTypeProvider } from 'fastify-type-provider-zod'
 import { characterRoutes } from './routes/characterRoutes.js'
 import { caseRoutes } from './routes/caseRoutes.js'
+
+import swagger from '@fastify/swagger'
+import swaggerUi from '@fastify/swagger-ui'
+
 
 const app = Fastify({
   logger: true,
@@ -29,12 +33,30 @@ app.setErrorHandler((error: FastifyError, request, reply) => {
   return reply.status(500).send({ error: 'Error interno del servidor' })
 })
 
-// Ruta de salud
+// swagger y s-ui
+await app.register(swagger, {
+  openapi: {
+    info: {
+      title: 'Detectives-Q API',
+      description: 'Documentación oficial de la API del universo de Detectives Q',
+      version: '1.0.0',
+    },
+  },
+  // ESTA ES LA LÍNEA CLAVE:
+  transform: jsonSchemaTransform, 
+})
+
+// 2. Configurar la interfaz visual (Swagger UI)
+await app.register(swaggerUi, {
+  routePrefix: '/docs', // La documentación estará en http://localhost:3000/docs
+})
+
+
+// Registrar rutas
 app.get('/health', async () => {
   return { status: 'ok', message: 'Detectives-Q API funcionando' }
 })
 
-// Registrar rutas
 app.register(characterRoutes, { prefix: '/characters' })
 
 app.register(caseRoutes, { prefix: '/cases' })

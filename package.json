@@ -37,6 +37,8 @@
     "vitest": "^5.1.0"
   },
   "dependencies": {
+    "@fastify/swagger": "^9.9.5",
+    "@fastify/swagger-ui": "^6.1.4",
     "@prisma/adapter-pg": "^7.10.0",
     "@prisma/client": "^7.10.0",
     "dotenv": "^18.0.7",
